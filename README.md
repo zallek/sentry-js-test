@@ -1,7 +1,7 @@
 # Test Sentry JS
 
 ### Hosted version
-- (http://zallek.alwaysdata.net/sentry/demo/)
+- http://zallek.alwaysdata.net/sentry/demo/
 
 ### Error Reporting
-- Error are not reported on Sentry when project is launch localy.
+- Errors are not reported on Sentry when the project is launch localy.
