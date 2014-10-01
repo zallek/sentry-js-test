@@ -13,57 +13,75 @@ module.exports = function(grunt) {
 				" *  <%= pkg.homepage %>\n" +
 				" *\n" +
 				" *  Made by <%= pkg.author.name %>\n" +
-				" *  Under <%= pkg.licenses[0].type %> License\n" +
 				" */\n"
+		},
+
+		//Clean definitions
+		clean: {
+			build: {
+				src: ["build/*"]
+			},
+			dist: {
+				src: ["dist/*"]
+			}
+		},
+
+		//Copy definitions
+		copy: {
+			build: {
+				files: [
+					{ expand: true, cwd: 'src/', src: 'index.html', dest: 'build/' }
+				]
+			},
+			dist: {
+				files: [
+					{ expand: true, cwd: 'build/', src: '*', dest: 'dist/sourcemap/'},
+					{ expand: true, cwd: 'build/', src: 'index.html', dest: 'dist/no-sourcemap/'}
+				]
+			}
 		},
 
 		// Concat definitions
 		concat: {
-			dist: {
-				src: ["src/jquery.boilerplate.js"],
-				dest: "dist/jquery.boilerplate.js"
+			build: {
+				src: ["src/*.js"],
+				dest: "build/sentry-js-test.js"
 			},
 			options: {
 				banner: "<%= meta.banner %>"
-			}
-		},
-
-		// Lint definitions
-		jshint: {
-			files: ["src/jquery.boilerplate.js"],
-			options: {
-				jshintrc: ".jshintrc"
 			}
 		},
 
 		// Minify definitions
 		uglify: {
-			my_target: {
-				src: ["dist/jquery.boilerplate.js"],
-				dest: "dist/jquery.boilerplate.min.js"
+			sourcemap: {
+				options: {
+					sourceMap: true,
+					sourceMapName: "dist/sourcemap/sentry-js-test.min.map"
+				},
+				files: {
+					"dist/sourcemap/sentry-js-test.min.js": ["build/sentry-js-test.js"]
+				}
+			},
+			no_sourcemap: {
+				files: {
+					"dist/no-sourcemap/sentry-js-test.min.js": ["build/sentry-js-test.js"]
+				}
 			},
 			options: {
-				banner: "<%= meta.banner %>"
+				banner: "<%= meta.banner %>",
 			}
 		},
 
-		// CoffeeScript compilation
-		coffee: {
-			compile: {
-				files: {
-					"dist/jquery.boilerplate.js": "src/jquery.boilerplate.coffee"
-				}
-			}
-		}
-
 	});
 
+	grunt.loadNpmTasks("grunt-contrib-clean");
+	grunt.loadNpmTasks("grunt-contrib-copy");
 	grunt.loadNpmTasks("grunt-contrib-concat");
-	grunt.loadNpmTasks("grunt-contrib-jshint");
 	grunt.loadNpmTasks("grunt-contrib-uglify");
-	grunt.loadNpmTasks("grunt-contrib-coffee");
 
-	grunt.registerTask("default", ["jshint", "concat", "uglify"]);
-	grunt.registerTask("travis", ["jshint"]);
+	grunt.registerTask("default", ["dist"]);
+	grunt.registerTask("build", ["clean:build", "copy:build", "concat"]);
+	grunt.registerTask("dist", ["clean:dist", "build", "copy:dist", "uglify"]);
 
 };
