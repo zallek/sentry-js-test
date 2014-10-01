@@ -23,6 +23,9 @@ module.exports = function(grunt) {
 			},
 			dist: {
 				src: ["dist/*"]
+			},
+			post_dist: {
+				src: ["dist/no-sourcemap/sentry-js-test.js"]
 			}
 		},
 
@@ -36,7 +39,7 @@ module.exports = function(grunt) {
 			dist: {
 				files: [
 					{ expand: true, cwd: 'build/', src: '*', dest: 'dist/sourcemap/'},
-					{ expand: true, cwd: 'build/', src: 'index.html', dest: 'dist/no-sourcemap/'}
+					{ expand: true, cwd: 'build/', src: '*', dest: 'dist/no-sourcemap/'},
 				]
 			}
 		},
@@ -60,12 +63,12 @@ module.exports = function(grunt) {
 					sourceMapName: "dist/sourcemap/sentry-js-test.min.map"
 				},
 				files: {
-					"dist/sourcemap/sentry-js-test.min.js": ["build/sentry-js-test.js"]
+					"dist/sourcemap/sentry-js-test.min.js": ["dist/sourcemap/sentry-js-test.js"]
 				}
 			},
 			no_sourcemap: {
 				files: {
-					"dist/no-sourcemap/sentry-js-test.min.js": ["build/sentry-js-test.js"]
+					"dist/no-sourcemap/sentry-js-test.min.js": ["dist/no-sourcemap/sentry-js-test.js"]
 				}
 			},
 			options: {
@@ -82,6 +85,6 @@ module.exports = function(grunt) {
 
 	grunt.registerTask("default", ["dist"]);
 	grunt.registerTask("build", ["clean:build", "copy:build", "concat"]);
-	grunt.registerTask("dist", ["clean:dist", "build", "copy:dist", "uglify"]);
+	grunt.registerTask("dist", ["clean:dist", "build", "copy:dist", "uglify", "clean:post_dist"]);
 
 };
