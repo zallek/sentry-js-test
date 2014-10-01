@@ -1,5 +1,5 @@
 # Test Sentry JS
-Sentry JS integrate test. Sourcemap and No sourcemap test.
+Sentry JS integration test. Sourcemap and No sourcemap test.
 
 Note: Errors are **not reported** on Sentry when the project is launch **localy**.
 
