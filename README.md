@@ -1,7 +1,7 @@
 # Test Sentry JS
 Sentry JS integration test. Sourcemap and No sourcemap test.
 
-Note: Errors are **not reported** on Sentry when the project is launch **localy**.
+Note: Errors are **not reported** on Sentry when the project is launched **localy**.
 
 ### Hosted version
 - With sourcemap: http://zallek.alwaysdata.net/sentry/sourcemap/
